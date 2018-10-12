@@ -1,0 +1,60 @@
+#include "RIMS.h"
+enum States {START, OFF_RELEASE, OFF_PRESS, ON_PRESS, ON_RELEASE} state;
+
+void Tick(){
+
+	switch(state){ // Transitions
+		case START:
+			state = OFF_RELEASE;
+			B = 0;
+			break;
+		case OFF_RELEASE:
+			if (!A0){
+				state = OFF_RELEASE;
+				}
+			else if (A0){
+				B = 0x01;
+				state = ON_PRESS;
+				}
+			else {break;}
+		case ON_PRESS:
+			if (A0){
+				state = ON_PRESS;
+				}
+			else if (!A0){
+				state = ON_RELEASE;
+				}
+			else {break;}
+		case ON_RELEASE:
+			if (!A0){
+				state = ON_RELEASE;
+				}
+			else if (A0){
+				state = OFF_PRESS;
+				B = 0;
+				}
+			else {break;}
+			}
+		case OFF_PRESS:
+			if (A0){
+				state = OFF_PRESS;
+				}
+			else if (!A0){
+				state = OFF_RELEASE;
+				}
+			else {break;}
+			}
+		default:
+			break;rr
+	}//Transitions
+
+	switch(state){ // state actions
+	   //none
+	}// State actions
+}
+
+void main(){
+	B = 0x00; // Initialize outputs
+	state = ...; // Indicates initial call
+	while(1) {Tick();}
+}

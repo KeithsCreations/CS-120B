@@ -1,0 +1,42 @@
+#include "RIMS.h"
+enum States {START, OFF, ON} state;
+
+void Tick(){
+
+	switch(state){ // Transitions	
+	case START:
+		B = 0;
+		state = OFF;
+		break;
+	case OFF:
+		if (!A0){
+			state = OFF;
+		}
+		else if (A0){
+			state = ON;
+			B = 0x01;
+			}
+		else
+		break;
+	case ON:
+		if (!A0){
+			state = OFF;
+			B = 0;
+		}
+		else if (A0){
+			state = ON;
+		else
+		break;
+	}//Transitions
+
+	switch(state){ // state actions
+	
+	}// State actions
+}
+
+void main(){
+	B = 0x00; // Initialize outputs
+
+	state = ...; // Indicates initial call
+	while(1) {Tick();}
+}
