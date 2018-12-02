@@ -1,0 +1,166 @@
+
+khuss001_lab2_part1.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000c6  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  0000011a  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  0000011a  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  0000014c  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000028  00000000  00000000  00000188  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000005f9  00000000  00000000  000001b0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 0000056c  00000000  00000000  000007a9  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000222  00000000  00000000  00000d15  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000034  00000000  00000000  00000f38  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000002f1  00000000  00000000  00000f6c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    0000008f  00000000  00000000  0000125d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000018  00000000  00000000  000012ec  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 36 00 	call	0x6c	; 0x6c <main>
+  64:	0c 94 61 00 	jmp	0xc2	; 0xc2 <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <main>:
+	return ((x & (0x01 << k)) != 0);
+}
+
+int main(void)
+{
+   DDRA = 0x00; PORTA = 0xFF; // Configure port A's 8 pins as inputs
+  6c:	1a ba       	out	0x1a, r1	; 26
+  6e:	8f ef       	ldi	r24, 0xFF	; 255
+  70:	8b bb       	out	0x1b, r24	; 27
+   DDRB = 0x00; PORTB = 0xFF; // Configure port B's 8 pins as outputs
+  72:	17 ba       	out	0x17, r1	; 23
+  74:	88 bb       	out	0x18, r24	; 24
+   DDRC = 0xFF; PORTC = 0x00; // Configure port B's 8 pins as outputs
+  76:	84 bb       	out	0x14, r24	; 20
+  78:	15 ba       	out	0x15, r1	; 21
+   unsigned int tmpC = 0x00; // used for updating C
+	unsigned int i = 0x00;
+    while (1) 
+    {
+		tmpC = 0x00;
+		for (i = 0; i < 0x08; ++i)
+  7a:	20 e0       	ldi	r18, 0x00	; 0
+  7c:	30 e0       	ldi	r19, 0x00	; 0
+   DDRC = 0xFF; PORTC = 0x00; // Configure port B's 8 pins as outputs
+   unsigned int tmpC = 0x00; // used for updating C
+	unsigned int i = 0x00;
+    while (1) 
+    {
+		tmpC = 0x00;
+  7e:	40 e0       	ldi	r20, 0x00	; 0
+  80:	50 e0       	ldi	r21, 0x00	; 0
+		for (i = 0; i < 0x08; ++i)
+		{
+		//if there is a bit that is == 1, add 1 to PINC
+		if (getBit(PINA, i)){
+  82:	89 b3       	in	r24, 0x19	; 25
+ */ 
+
+#include <avr/io.h>
+
+unsigned char getBit(unsigned char x, unsigned char k){
+	return ((x & (0x01 << k)) != 0);
+  84:	b9 01       	movw	r22, r18
+  86:	77 27       	eor	r23, r23
+    {
+		tmpC = 0x00;
+		for (i = 0; i < 0x08; ++i)
+		{
+		//if there is a bit that is == 1, add 1 to PINC
+		if (getBit(PINA, i)){
+  88:	90 e0       	ldi	r25, 0x00	; 0
+  8a:	06 2e       	mov	r0, r22
+  8c:	02 c0       	rjmp	.+4      	; 0x92 <main+0x26>
+  8e:	95 95       	asr	r25
+  90:	87 95       	ror	r24
+  92:	0a 94       	dec	r0
+  94:	e2 f7       	brpl	.-8      	; 0x8e <main+0x22>
+  96:	80 ff       	sbrs	r24, 0
+  98:	02 c0       	rjmp	.+4      	; 0x9e <main+0x32>
+			tmpC += 1;
+  9a:	4f 5f       	subi	r20, 0xFF	; 255
+  9c:	5f 4f       	sbci	r21, 0xFF	; 255
+			}
+		if (getBit(PINB, i)) {
+  9e:	86 b3       	in	r24, 0x16	; 22
+  a0:	90 e0       	ldi	r25, 0x00	; 0
+  a2:	02 c0       	rjmp	.+4      	; 0xa8 <main+0x3c>
+  a4:	95 95       	asr	r25
+  a6:	87 95       	ror	r24
+  a8:	6a 95       	dec	r22
+  aa:	e2 f7       	brpl	.-8      	; 0xa4 <main+0x38>
+  ac:	80 ff       	sbrs	r24, 0
+  ae:	02 c0       	rjmp	.+4      	; 0xb4 <main+0x48>
+			tmpC += 1;
+  b0:	4f 5f       	subi	r20, 0xFF	; 255
+  b2:	5f 4f       	sbci	r21, 0xFF	; 255
+		}
+		PORTC = tmpC;
+  b4:	45 bb       	out	0x15, r20	; 21
+   unsigned int tmpC = 0x00; // used for updating C
+	unsigned int i = 0x00;
+    while (1) 
+    {
+		tmpC = 0x00;
+		for (i = 0; i < 0x08; ++i)
+  b6:	2f 5f       	subi	r18, 0xFF	; 255
+  b8:	3f 4f       	sbci	r19, 0xFF	; 255
+  ba:	28 30       	cpi	r18, 0x08	; 8
+  bc:	31 05       	cpc	r19, r1
+  be:	09 f7       	brne	.-62     	; 0x82 <main+0x16>
+  c0:	dc cf       	rjmp	.-72     	; 0x7a <main+0xe>
+
+000000c2 <_exit>:
+  c2:	f8 94       	cli
+
+000000c4 <__stop_program>:
+  c4:	ff cf       	rjmp	.-2      	; 0xc4 <__stop_program>
