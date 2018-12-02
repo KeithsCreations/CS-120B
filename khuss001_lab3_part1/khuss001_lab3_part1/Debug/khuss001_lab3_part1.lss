@@ -1,0 +1,219 @@
+
+khuss001_lab3_part1.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000102  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  00000176  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000003  00800060  00800060  00000176  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  00000176  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000001a8  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000030  00000000  00000000  000001e4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   0000060a  00000000  00000000  00000214  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 00000545  00000000  00000000  0000081e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   00000259  00000000  00000000  00000d63  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000044  00000000  00000000  00000fbc  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    00000369  00000000  00000000  00001000  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000020  00000000  00000000  00001369  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   8:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  10:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  14:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  18:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  1c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  20:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  24:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  28:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  2c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  30:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  34:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  38:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  3c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  40:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  44:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  48:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  4c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  50:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_clear_bss>:
+  60:	20 e0       	ldi	r18, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	01 c0       	rjmp	.+2      	; 0x6a <.do_clear_bss_start>
+
+00000068 <.do_clear_bss_loop>:
+  68:	1d 92       	st	X+, r1
+
+0000006a <.do_clear_bss_start>:
+  6a:	a3 36       	cpi	r26, 0x63	; 99
+  6c:	b2 07       	cpc	r27, r18
+  6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
+  70:	0e 94 7a 00 	call	0xf4	; 0xf4 <main>
+  74:	0c 94 7f 00 	jmp	0xfe	; 0xfe <_exit>
+
+00000078 <__bad_interrupt>:
+  78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000007c <TickFct_State_machine_1>:
+}
+
+enum SM1_States { START, SM1_OFF_RELEASE, SM1_ON_PRESS, SM1_ON_RELEASE, SM1_OFF_PRESS } SM1_State;
+
+void TickFct_State_machine_1() {
+	switch(SM1_State) { // Transitions
+  7c:	80 91 61 00 	lds	r24, 0x0061	; 0x800061 <SM1_State>
+  80:	82 30       	cpi	r24, 0x02	; 2
+  82:	81 f0       	breq	.+32     	; 0xa4 <TickFct_State_machine_1+0x28>
+  84:	18 f4       	brcc	.+6      	; 0x8c <TickFct_State_machine_1+0x10>
+  86:	81 30       	cpi	r24, 0x01	; 1
+  88:	31 f0       	breq	.+12     	; 0x96 <TickFct_State_machine_1+0x1a>
+  8a:	21 c0       	rjmp	.+66     	; 0xce <TickFct_State_machine_1+0x52>
+  8c:	83 30       	cpi	r24, 0x03	; 3
+  8e:	89 f0       	breq	.+34     	; 0xb2 <TickFct_State_machine_1+0x36>
+  90:	84 30       	cpi	r24, 0x04	; 4
+  92:	b1 f0       	breq	.+44     	; 0xc0 <TickFct_State_machine_1+0x44>
+  94:	1c c0       	rjmp	.+56     	; 0xce <TickFct_State_machine_1+0x52>
+		SM1_State = SM1_OFF_RELEASE;
+		break;
+		case SM1_OFF_RELEASE:
+		if (PINA == 0x01) {
+  96:	89 b3       	in	r24, 0x19	; 25
+  98:	81 30       	cpi	r24, 0x01	; 1
+  9a:	39 f5       	brne	.+78     	; 0xea <TickFct_State_machine_1+0x6e>
+			SM1_State = SM1_ON_PRESS;
+  9c:	82 e0       	ldi	r24, 0x02	; 2
+  9e:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <SM1_State>
+  a2:	19 c0       	rjmp	.+50     	; 0xd6 <TickFct_State_machine_1+0x5a>
+		//else if (PINA == 0x00) {
+		//	SM1_State = SM1_OFF_RELEASE;
+		//}
+		break;
+		case SM1_ON_PRESS:
+		if (PINA == 0x00) {
+  a4:	89 b3       	in	r24, 0x19	; 25
+  a6:	81 11       	cpse	r24, r1
+  a8:	16 c0       	rjmp	.+44     	; 0xd6 <TickFct_State_machine_1+0x5a>
+			SM1_State = SM1_ON_RELEASE;
+  aa:	83 e0       	ldi	r24, 0x03	; 3
+  ac:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <SM1_State>
+  b0:	08 95       	ret
+		//else if (PINA == 0x01) {
+		//	SM1_State = SM1_ON_PRESS;
+		//}
+		break;
+		case SM1_ON_RELEASE:
+		if (PINA == 0x01) {
+  b2:	89 b3       	in	r24, 0x19	; 25
+  b4:	81 30       	cpi	r24, 0x01	; 1
+  b6:	e9 f4       	brne	.+58     	; 0xf2 <TickFct_State_machine_1+0x76>
+			SM1_State = SM1_OFF_PRESS;
+  b8:	84 e0       	ldi	r24, 0x04	; 4
+  ba:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <SM1_State>
+  be:	10 c0       	rjmp	.+32     	; 0xe0 <TickFct_State_machine_1+0x64>
+		//else if (PINA == 0x00) {
+		//	SM1_State = SM1_ON_RELEASE;
+		//}
+		break;
+		case SM1_OFF_PRESS:
+		if (PINA == 0x00) {
+  c0:	89 b3       	in	r24, 0x19	; 25
+  c2:	81 11       	cpse	r24, r1
+  c4:	0d c0       	rjmp	.+26     	; 0xe0 <TickFct_State_machine_1+0x64>
+			SM1_State = SM1_OFF_RELEASE;
+  c6:	81 e0       	ldi	r24, 0x01	; 1
+  c8:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <SM1_State>
+  cc:	0e c0       	rjmp	.+28     	; 0xea <TickFct_State_machine_1+0x6e>
+		//else if (PINA == 0x01) {
+		//	SM1_State = SM1_OFF_PRESS;
+		//}
+		break;
+		default:
+		SM1_State = SM1_OFF_RELEASE;
+  ce:	81 e0       	ldi	r24, 0x01	; 1
+  d0:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <SM1_State>
+		break;
+  d4:	0a c0       	rjmp	.+20     	; 0xea <TickFct_State_machine_1+0x6e>
+		case SM1_OFF_RELEASE:
+		tmpB0 = 0x01;
+		PORTB = tmpB0;
+		break;
+		case SM1_ON_PRESS:
+		tmpB0 = 0x02;
+  d6:	82 e0       	ldi	r24, 0x02	; 2
+  d8:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
+		//tmpB1 = 0x02;
+		PORTB = tmpB0;
+  dc:	88 bb       	out	0x18, r24	; 24
+		break;
+  de:	08 95       	ret
+		case SM1_ON_RELEASE:
+		break;
+		case SM1_OFF_PRESS:
+		tmpB0 = 0x01;
+  e0:	81 e0       	ldi	r24, 0x01	; 1
+  e2:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
+		//tmpB1 = 0x00;
+		PORTB = tmpB0;
+  e6:	88 bb       	out	0x18, r24	; 24
+		break;
+  e8:	08 95       	ret
+		
+	} // Transitions
+
+	switch(SM1_State) { // State actions
+		case SM1_OFF_RELEASE:
+		tmpB0 = 0x01;
+  ea:	81 e0       	ldi	r24, 0x01	; 1
+  ec:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
+		PORTB = tmpB0;
+  f0:	88 bb       	out	0x18, r24	; 24
+  f2:	08 95       	ret
+
+000000f4 <main>:
+
+	//const unsigned int periodState_machine_1 = 1000; // 1000 ms default
+	//TimerSet(periodState_machine_1);
+	//TimerOn();
+	
+	SM1_State = START; // Initial state
+  f4:	10 92 61 00 	sts	0x0061, r1	; 0x800061 <SM1_State>
+//DDRA = 0x00; PORTA = 0xFF;
+//DDRB = 0xFF; PORTB = 0x00;
+//unsigned char SM1_Clk;
+
+	while(1) {
+		TickFct_State_machine_1();
+  f8:	0e 94 3e 00 	call	0x7c	; 0x7c <TickFct_State_machine_1>
+  fc:	fd cf       	rjmp	.-6      	; 0xf8 <main+0x4>
+
+000000fe <_exit>:
+  fe:	f8 94       	cli
+
+00000100 <__stop_program>:
+ 100:	ff cf       	rjmp	.-2      	; 0x100 <__stop_program>
